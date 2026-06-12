@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/nilchan-social/golang-todoapp/internal/core/domain"
-	core_http_server "github.com/nilchan-social/golang-todoapp/internal/core/transport/http/server"
+	"github.com/rubtsov-ilya/golang-starter/internal/core/domain"
+	core_http_server "github.com/rubtsov-ilya/golang-starter/internal/core/transport/http/server"
 )
 
 // StatisticsHTTPHandler — HTTP-обработчик для операций со статистикой.

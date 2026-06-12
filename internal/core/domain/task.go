@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	core_errors "github.com/nilchan-social/golang-todoapp/internal/core/errors"
+	core_errors "github.com/rubtsov-ilya/golang-starter/internal/core/errors"
 )
 
 // Task — доменная сущность задачи. Представляет задачу в системе.

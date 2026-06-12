@@ -13,7 +13,7 @@ import (
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
-	core_errors "github.com/nilchan-social/golang-todoapp/internal/core/errors"
+	core_errors "github.com/rubtsov-ilya/golang-starter/internal/core/errors"
 )
 
 // requestValidator — глобальный экземпляр валидатора (go-playground/validator).

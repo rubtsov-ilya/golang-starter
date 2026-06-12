@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-	core_postgres_pool "github.com/nilchan-social/golang-todoapp/internal/core/repository/postgres/pool"
+	core_postgres_pool "github.com/rubtsov-ilya/golang-starter/internal/core/repository/postgres/pool"
 )
 
 // Pool — конкретная реализация интерфейса core_postgres_pool.Pool

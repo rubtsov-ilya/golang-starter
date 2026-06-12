@@ -2,8 +2,8 @@ package users_postgres_repository
 
 import (
 	"github.com/google/uuid"
-	"github.com/nilchan-social/golang-todoapp/internal/core/domain"
-	core_postgres_pool "github.com/nilchan-social/golang-todoapp/internal/core/repository/postgres/pool"
+	"github.com/rubtsov-ilya/golang-starter/internal/core/domain"
+	core_postgres_pool "github.com/rubtsov-ilya/golang-starter/internal/core/repository/postgres/pool"
 )
 
 // UserModel — структура для маппинга строки таблицы `todoapp.users` в Go-тип.

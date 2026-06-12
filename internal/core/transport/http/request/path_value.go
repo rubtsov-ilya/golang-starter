@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/google/uuid"
-	core_errors "github.com/nilchan-social/golang-todoapp/internal/core/errors"
+	core_errors "github.com/rubtsov-ilya/golang-starter/internal/core/errors"
 )
 
 // GetUUIDPathValue извлекает переменную пути (path variable) по ключу key

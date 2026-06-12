@@ -7,7 +7,7 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	"github.com/nilchan-social/golang-todoapp/internal/core/domain"
+	"github.com/rubtsov-ilya/golang-starter/internal/core/domain"
 )
 
 // TasksService — сервис задач. Содержит бизнес-логику, не завязанную

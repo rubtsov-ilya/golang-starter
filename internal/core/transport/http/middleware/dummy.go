@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	core_logger "github.com/nilchan-social/golang-todoapp/internal/core/logger"
+	core_logger "github.com/rubtsov-ilya/golang-starter/internal/core/logger"
 )
 
 // Dummy — учебный middleware-заглушка для демонстрации принципа работы middleware.

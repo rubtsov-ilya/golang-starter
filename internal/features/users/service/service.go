@@ -5,7 +5,7 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	"github.com/nilchan-social/golang-todoapp/internal/core/domain"
+	"github.com/rubtsov-ilya/golang-starter/internal/core/domain"
 )
 
 // UsersService — сервис пользователей с бизнес-логикой CRUD-операций.

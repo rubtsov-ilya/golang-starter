@@ -5,7 +5,7 @@ import (
 	"regexp"
 
 	"github.com/google/uuid"
-	core_errors "github.com/nilchan-social/golang-todoapp/internal/core/errors"
+	core_errors "github.com/rubtsov-ilya/golang-starter/internal/core/errors"
 )
 
 // User — доменная сущность пользователя.

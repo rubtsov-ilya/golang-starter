@@ -5,8 +5,8 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
-	"github.com/nilchan-social/golang-todoapp/internal/core/domain"
-	core_errors "github.com/nilchan-social/golang-todoapp/internal/core/errors"
+	"github.com/rubtsov-ilya/golang-starter/internal/core/domain"
+	core_errors "github.com/rubtsov-ilya/golang-starter/internal/core/errors"
 )
 
 // GetTasks возвращает список задач с пагинацией и опциональным фильтром по автору.

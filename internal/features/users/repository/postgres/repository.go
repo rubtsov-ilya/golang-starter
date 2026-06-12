@@ -2,7 +2,7 @@
 package users_postgres_repository
 
 import (
-	core_postgres_pool "github.com/nilchan-social/golang-todoapp/internal/core/repository/postgres/pool"
+	core_postgres_pool "github.com/rubtsov-ilya/golang-starter/internal/core/repository/postgres/pool"
 )
 
 // UsersRepository — реализация репозитория пользователей на базе PostgreSQL.

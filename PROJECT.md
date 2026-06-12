@@ -1,6 +1,6 @@
 # Руководство по использованию проекта (Makefile)
 
-Данный документ описывает, как настраивать, запускать и разрабатывать проект с использованием команд, определенных в [Makefile](file:///c:/Users/rubts/Desktop/golang-starter/Makefile).
+Данный документ описывает, как настраивать, запускать и разрабатывать проект с использованием команд, определенных в [Makefile](file:///C:/Users/rubts/GolandProjects/golang-starter/Makefile).
 
 ---
 
@@ -13,7 +13,7 @@
 
 ### Настройка переменных окружения
 
-В корне проекта находится файл шаблона [.env.example](file:///c:/Users/rubts/Desktop/golang-starter/.env.example). 
+В корне проекта находится файл шаблона [.env.example](file:///C:/Users/rubts/GolandProjects/golang-starter/.env.example). 
 Создайте на его основе локальный файл `.env`:
 
 ```bash
@@ -29,7 +29,7 @@ cp .env.example .env
 
 ## 2. Управление инфраструктурой (Окружение)
 
-Вся инфраструктура проекта (база данных PostgreSQL) описывается в файле [docker-compose.yaml](file:///c:/Users/rubts/Desktop/golang-starter/docker-compose.yaml). Для управления ею используются следующие команды:
+Вся инфраструктура проекта (база данных PostgreSQL) описывается в файле [docker-compose.yaml](file:///C:/Users/rubts/GolandProjects/golang-starter/docker-compose.yaml). Для управления ею используются следующие команды:
 
 ### Запуск и остановка БД
 * **Запустить базу данных:**
@@ -38,13 +38,11 @@ cp .env.example .env
   ```
   Запускает контейнер PostgreSQL (`todoapp-postgres`) в фоновом (detached) режиме.
 
-
 * **Остановить базу данных:**
   ```bash
   make env-down
   ```
   Останавливает и удаляет контейнер базы данных, сохраняя данные в volume.
-
 
 * **Просмотр статуса сервисов:**
   ```bash
@@ -61,7 +59,6 @@ cp .env.example .env
   ```
   Запускает контейнер `port-forwarder` (на базе `socat`), который перенаправляет трафик с `127.0.0.1:5432` на порт `5432` контейнера БД.
 
-
 * **Закрыть порты:**
   ```bash
   make env-port-close
@@ -77,7 +74,6 @@ cp .env.example .env
   > [!WARNING]
   > Эта команда запрашивает подтверждение в терминале. При согласии (`y`) все данные в БД будут безвозвратно удалены!
 
-
 * **Очистить логи:**
   ```bash
   make logs-cleanup
@@ -90,7 +86,7 @@ cp .env.example .env
 
 ## 3. Миграции базы данных
 
-Миграции запускаются через Docker-контейнер с утилитой `golang-migrate`. Файлы миграций располагаются в директории [migrations](file:///c:/Users/rubts/Desktop/golang-starter/migrations).
+Миграции запускаются через Docker-контейнер с утилитой `golang-migrate`. Файлы миграций располагаются в директории [migrations](file:///C:/Users/rubts/GolandProjects/golang-starter/migrations).
 
 * **Создать новую миграцию:**
   ```bash
@@ -99,20 +95,17 @@ cp .env.example .env
   *Пример:* `make migrate-create seq=init_schema`
   Создаст новые файлы `.up.sql` и `.down.sql` в директории `migrations/` с порядковым номером версии.
 
-
 * **Применить миграции (Up):**
   ```bash
   make migrate-up
   ```
   Накатывает все еще не примененные миграции на базу данных.
 
-
 * **Откатить миграции (Down):**
   ```bash
   make migrate-down
   ```
   Откатывает последнюю примененную миграцию.
-
 
 * **Выполнить произвольное действие с миграциями:**
   ```bash
@@ -145,7 +138,7 @@ cp .env.example .env
    Эта команда автоматически:
    - Настроит переменные окружения для локальной работы (`POSTGRES_HOST=localhost`, `REDIS_HOST=localhost` и директорию логов).
    - Выполнит проверку зависимостей через `go mod tidy`.
-   - Запустит Go-приложение из точки входа [cmd/todoapp/main.go](file:///c:/Users/rubts/Desktop/golang-starter/cmd/todoapp/main.go).
+   - Запустит Go-приложение из точки входа [cmd/todoapp/main.go](file:///C:/Users/rubts/GolandProjects/golang-starter/cmd/todoapp/main.go).
 
 ### Вариант Б: Запуск в Docker Compose (Режим деплоя)
 Этот режим запускает приложение изолированно в Docker-контейнере.
@@ -155,7 +148,6 @@ cp .env.example .env
   make todoapp-deploy
   ```
   Собирает Docker-образ приложения (используя `cmd/todoapp/Dockerfile`) и запускает контейнер `todoapp`. Приложение будет работать внутри Docker-сети и напрямую общаться с PostgreSQL по имени хоста `todoapp-postgres`.
-
 
 * **Остановить:**
   ```bash
@@ -173,7 +165,7 @@ cp .env.example .env
   ```bash
   make swagger-gen
   ```
-  Запускает генератор `swag` внутри Docker-контейнера. Он сканирует код и обновляет файлы в директории [docs](file:///c:/Users/rubts/Desktop/golang-starter/docs).
+  Запускает генератор `swag` внутри Docker-контейнера. Он сканирует код и обновляет файлы в директории [docs](file:///C:/Users/rubts/GolandProjects/golang-starter/docs).
 
 ---
 
@@ -183,4 +175,133 @@ cp .env.example .env
 ```bash
 make help
 ```
-Или просто запустив команду `make` без параметров
+Или просто запустив команду `make` без параметров (так как цель по умолчанию установлена в `help`).
+
+---
+
+## 7. Структура приложения и слои архитектуры
+
+Проект спроектирован по принципам Чистой Архитектуры (Clean Architecture) с использованием инверсии зависимостей (DIP). Код разделен на ядро приложения (`core`) и бизнес-фичи (`features`).
+
+Основная структура каталогов:
+- **[cmd/todoapp/main.go](file:///C:/Users/rubts/GolandProjects/golang-starter/cmd/todoapp/main.go)** — Главная точка входа. Здесь происходит чтение конфигурации, инициализация пула соединений PostgreSQL, ручное внедрение зависимостей (DI) для всех фич и запуск веб-сервера.
+- **[internal/core](file:///C:/Users/rubts/GolandProjects/golang-starter/internal/core)** — Общие системные компоненты:
+  - **config** — парсинг конфигураций окружения.
+  - **domain** — чистые доменные сущности (бизнес-модели), не зависящие от фреймворков и баз данных (например, `Task`, `User`).
+  - **errors** — системные ошибки.
+  - **logger** — настройка логгера Zap.
+  - **repository** — интерфейсы и реализации инфраструктурных пулов (например, пул pgx для PostgreSQL).
+  - **transport** — HTTP-сервер, глобальные middleware (CORS, Trace, Panic, Логирование), вспомогательные функции для парсинга запросов и формирования JSON-ответов.
+- **[internal/features](file:///C:/Users/rubts/GolandProjects/golang-starter/internal/features)** — Изолированные бизнес-фичи (модули) приложения (например, `tasks`, `users`, `statistics`):
+  - Каждая фича строго разделена на три слоя:
+    1. **transport/http** (Транспортный слой):
+       - Обрабатывает HTTP-запросы, валидирует входные JSON DTO, обращается к сервису и возвращает JSON-ответ.
+       - Содержит интерфейс `Service` (DIP), описывающий только те методы бизнес-логики, которые нужны транспорту.
+    2. **service** (Слой бизнес-логики):
+       - Реализует бизнес-правила и координирует вызовы репозитория.
+       - Содержит интерфейс `Repository` (DIP), описывающий только те методы работы с базой данных, которые нужны сервису.
+    3. **repository/postgres** (Инфраструктурный слой доступа к данным):
+       - Выполняет прямые SQL-запросы к базе данных через пул соединений.
+       - Преобразует структуры БД (из `models.go`) в чистые сущности `domain`.
+
+---
+
+## 8. Поэтапное создание новой фичи
+
+Ниже представлен пошаговый процесс добавления новой функциональности (например, фичи «Проекты» — `projects`).
+
+### Шаг 1. Определение сущности в Domain
+Если для фичи требуется новая бизнес-модель, создайте её в общем домене:
+* Создайте файл `internal/core/domain/project.go` и опишите структуру:
+  ```go
+  type Project struct {
+      ID   uuid.UUID
+      Name string
+  }
+  ```
+
+### Шаг 2. Создание миграции базы данных
+Если фиче нужна таблица в БД, создайте и примените миграцию:
+1. Выполните:
+   ```bash
+   make migrate-create seq=create_projects_table
+   ```
+2. Заполните SQL-инструкции создания таблицы в файле `.up.sql` и удаления в `.down.sql` в папке `migrations`.
+3. Примените миграцию:
+   ```bash
+   make migrate-up
+   ```
+
+### Шаг 3. Реализация транспортного слоя (Transport HTTP)
+Начало разработки фичи "снаружи-внутрь" (outside-in) позволяет сначала спроектировать HTTP-контракты и DTO для взаимодействия с внешним миром.
+1. Создайте директорию `internal/features/projects/transport/http`.
+2. Создайте файл `transport.go`:
+   - Объявите структуру обработчика `ProjectsHTTPHandler`.
+   - Объявите интерфейс `ProjectsService` с методами, необходимыми для HTTP-обработчиков. **Важно:** Интерфейс сервиса объявляется именно в транспортном пакете (Dependency Inversion), поскольку транспорт диктует требования к бизнес-логике.
+   - Опишите метод `Routes() []core_http_server.Route` для сопоставления путей, HTTP-методов и обработчиков:
+     ```go
+     func (h *ProjectsHTTPHandler) Routes() []core_http_server.Route {
+         return []core_http_server.Route{
+             {
+                 Method:  http.MethodPost,
+                 Path:    "/projects",
+                 Handler: h.CreateProject,
+             },
+         }
+     }
+     ```
+3. Создайте файлы конкретных обработчиков (например, `create_project.go`):
+   - Опишите структуры запроса/ответа (DTO) и валидацию входящих параметров.
+   - Напишите обработчик (Handler), который читает HTTP-запрос, вызывает интерфейсный метод `ProjectsService` и возвращает результат в JSON с помощью встроенных хелперов ответа.
+
+### Шаг 4. Реализация слоя бизнес-логики (Service)
+Теперь мы реализуем бизнес-логику, удовлетворяющую интерфейсу, который запросил наш транспортный слой.
+1. Создайте директорию `internal/features/projects/service`.
+2. Создайте файл `service.go` в этом пакете:
+   - Объявите структуру сервиса `ProjectsService` (она должна реализовывать интерфейс `ProjectsService` из пакета транспорта).
+   - Объявите интерфейс `ProjectsRepository`, описывающий методы сохранения/получения данных, которые необходимы сервису. **Важно:** Интерфейс репозитория объявляется именно здесь (Dependency Inversion), так как бизнес-логика диктует свои требования к хранилищу.
+   - Напишите конструктор:
+     ```go
+     type ProjectsService struct {
+         repo ProjectsRepository
+     }
+     
+     type ProjectsRepository interface {
+         SaveProject(ctx context.Context, p domain.Project) (domain.Project, error)
+     }
+     
+     func NewProjectsService(repo ProjectsRepository) *ProjectsService {
+         return &ProjectsService{repo: repo}
+     }
+     ```
+3. Создайте файлы конкретных методов сервиса (например, `create_project.go`) и реализуйте в них бизнес-логику (валидация, доменные инварианты), вызывая методы интерфейса `ProjectsRepository`.
+
+### Шаг 5. Реализация доступа к данным (Repository)
+На последнем этапе мы создаем конкретную реализацию хранилища под контракт репозитория, определенный в сервисе.
+1. Создайте директорию `internal/features/projects/repository/postgres`.
+2. Создайте файл `repository.go`:
+   - Объявите структуру `ProjectsRepository` (которая реализует интерфейс `ProjectsRepository` из пакета сервиса), принимающую пул соединений `core_postgres_pool.Pool`.
+   - Напишите конструктор.
+3. Создайте `models.go` для объявления структур хранения, соответствующих колонкам в таблице БД (с тегами для маппинга pgx).
+4. Создайте файлы с реализацией методов работы с БД (например, `save_project.go`), которые будут выполнять SQL-запросы через пул и удовлетворять интерфейсу `ProjectsRepository` из слоя Service.
+
+### Шаг 6. Регистрация и связывание (Dependency Injection) в main.go
+Соберите все части воедино в файле [cmd/todoapp/main.go](file:///C:/Users/rubts/GolandProjects/golang-starter/cmd/todoapp/main.go):
+1. Импортируйте созданные пакеты фичи.
+2. Проинициализируйте слои (снизу вверх) внутри функции `main()`:
+   ```go
+   projectsRepository := projects_postgres_repository.NewProjectsRepository(postgresPool)
+   projectsService := projects_service.NewProjectsService(projectsRepository)
+   projectsTransportHTTP := projects_transport_http.NewProjectsHTTPHandler(projectsService)
+   ```
+3. Зарегистрируйте роуты в маршрутизаторе:
+   ```go
+   apiVersionRouterV1.AddRoutes(projectsTransportHTTP.Routes()...)
+   ```
+
+### Шаг 7. Документирование API (Swagger)
+1. Добавьте Swagger-комментарии над методами-обработчиками в транспортном слое (например, `@Summary`, `@Accept`, `@Produce`, `@Param`, `@Success` и т.д.).
+2. Перегенерируйте спецификацию:
+   ```bash
+   make swagger-gen
+   ```

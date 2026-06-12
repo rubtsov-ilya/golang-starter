@@ -3,7 +3,7 @@
 // в отдельный файл для читаемости.
 package tasks_postgres_repository
 
-import core_postgres_pool "github.com/nilchan-social/golang-todoapp/internal/core/repository/postgres/pool"
+import core_postgres_pool "github.com/rubtsov-ilya/golang-starter/internal/core/repository/postgres/pool"
 
 // TasksRepository — реализация репозитория задач на базе PostgreSQL.
 // Принимает интерфейс core_postgres_pool.Pool, а не конкретный тип pgx,

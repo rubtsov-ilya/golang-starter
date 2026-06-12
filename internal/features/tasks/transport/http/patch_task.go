@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/nilchan-social/golang-todoapp/internal/core/domain"
-	core_logger "github.com/nilchan-social/golang-todoapp/internal/core/logger"
-	core_http_request "github.com/nilchan-social/golang-todoapp/internal/core/transport/http/request"
-	core_http_response "github.com/nilchan-social/golang-todoapp/internal/core/transport/http/response"
-	core_http_types "github.com/nilchan-social/golang-todoapp/internal/core/transport/http/types"
+	"github.com/rubtsov-ilya/golang-starter/internal/core/domain"
+	core_logger "github.com/rubtsov-ilya/golang-starter/internal/core/logger"
+	core_http_request "github.com/rubtsov-ilya/golang-starter/internal/core/transport/http/request"
+	core_http_response "github.com/rubtsov-ilya/golang-starter/internal/core/transport/http/response"
+	core_http_types "github.com/rubtsov-ilya/golang-starter/internal/core/transport/http/types"
 )
 
 type PatchTaskRequest struct {

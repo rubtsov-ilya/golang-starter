@@ -3,7 +3,7 @@ package core_http_server
 import (
 	"net/http"
 
-	core_http_middleware "github.com/nilchan-social/golang-todoapp/internal/core/transport/http/middleware"
+	core_http_middleware "github.com/rubtsov-ilya/golang-starter/internal/core/transport/http/middleware"
 )
 
 // Route описывает один HTTP-маршрут: метод, путь, обработчик и middleware.

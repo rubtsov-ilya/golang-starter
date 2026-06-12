@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
-	"github.com/nilchan-social/golang-todoapp/internal/core/domain"
+	"github.com/rubtsov-ilya/golang-starter/internal/core/domain"
 )
 
 // PatchTask частично обновляет задачу по ID.

@@ -14,8 +14,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	core_logger "github.com/nilchan-social/golang-todoapp/internal/core/logger"
-	core_http_response "github.com/nilchan-social/golang-todoapp/internal/core/transport/http/response"
+	core_logger "github.com/rubtsov-ilya/golang-starter/internal/core/logger"
+	core_http_response "github.com/rubtsov-ilya/golang-starter/internal/core/transport/http/response"
 	"go.uber.org/zap"
 )
 

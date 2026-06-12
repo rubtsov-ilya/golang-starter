@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/nilchan-social/golang-todoapp/internal/core/domain"
+	"github.com/rubtsov-ilya/golang-starter/internal/core/domain"
 )
 
 // SaveUser вставляет нового пользователя в БД и возвращает сохранённую версию.

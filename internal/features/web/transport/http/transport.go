@@ -4,8 +4,8 @@ package web_transport_http
 import (
 	"net/http"
 
-	"github.com/nilchan-social/golang-todoapp/internal/core/domain"
-	core_http_server "github.com/nilchan-social/golang-todoapp/internal/core/transport/http/server"
+	"github.com/rubtsov-ilya/golang-starter/internal/core/domain"
+	core_http_server "github.com/rubtsov-ilya/golang-starter/internal/core/transport/http/server"
 )
 
 // WebHTTPHandler — HTTP-обработчик для статических страниц веб-интерфейса.

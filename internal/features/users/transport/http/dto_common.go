@@ -2,7 +2,7 @@ package users_transport_http
 
 import (
 	"github.com/google/uuid"
-	"github.com/nilchan-social/golang-todoapp/internal/core/domain"
+	"github.com/rubtsov-ilya/golang-starter/internal/core/domain"
 )
 
 // UserDTOResponse — DTO для представления пользователя в API-ответе.

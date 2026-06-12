@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"net/http"
 
-	core_logger "github.com/nilchan-social/golang-todoapp/internal/core/logger"
-	core_http_request "github.com/nilchan-social/golang-todoapp/internal/core/transport/http/request"
-	core_http_response "github.com/nilchan-social/golang-todoapp/internal/core/transport/http/response"
+	core_logger "github.com/rubtsov-ilya/golang-starter/internal/core/logger"
+	core_http_request "github.com/rubtsov-ilya/golang-starter/internal/core/transport/http/request"
+	core_http_response "github.com/rubtsov-ilya/golang-starter/internal/core/transport/http/response"
 )
 
 type GetUsersResponse []UserDTOResponse

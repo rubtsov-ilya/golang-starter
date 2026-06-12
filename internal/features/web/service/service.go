@@ -1,7 +1,7 @@
 // Package web_service содержит сервис для отдачи статических веб-страниц.
 package web_service
 
-import "github.com/nilchan-social/golang-todoapp/internal/core/domain"
+import "github.com/rubtsov-ilya/golang-starter/internal/core/domain"
 
 // WebService — сервис для работы с веб-страницами приложения.
 type WebService struct {

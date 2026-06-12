@@ -4,7 +4,7 @@ package core_http_types
 import (
 	"encoding/json"
 
-	"github.com/nilchan-social/golang-todoapp/internal/core/domain"
+	"github.com/rubtsov-ilya/golang-starter/internal/core/domain"
 )
 
 // Nullable[T] — HTTP-версия доменного Nullable[T] с реализацией UnmarshalJSON.

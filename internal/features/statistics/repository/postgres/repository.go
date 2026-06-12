@@ -3,7 +3,7 @@
 // статистики находится в domain.CreateStatistics, не здесь.
 package statistics_postgres_repository
 
-import core_postgres_pool "github.com/nilchan-social/golang-todoapp/internal/core/repository/postgres/pool"
+import core_postgres_pool "github.com/rubtsov-ilya/golang-starter/internal/core/repository/postgres/pool"
 
 // StatisticsRepository — репозиторий для получения данных, необходимых для статистики.
 type StatisticsRepository struct {

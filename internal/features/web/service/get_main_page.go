@@ -5,7 +5,7 @@ import (
 	"os"
 	"path"
 
-	"github.com/nilchan-social/golang-todoapp/internal/core/domain"
+	"github.com/rubtsov-ilya/golang-starter/internal/core/domain"
 )
 
 // GetMainPage возвращает содержимое главной HTML-страницы.

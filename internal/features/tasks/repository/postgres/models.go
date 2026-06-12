@@ -4,8 +4,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/nilchan-social/golang-todoapp/internal/core/domain"
-	core_postgres_pool "github.com/nilchan-social/golang-todoapp/internal/core/repository/postgres/pool"
+	"github.com/rubtsov-ilya/golang-starter/internal/core/domain"
+	core_postgres_pool "github.com/rubtsov-ilya/golang-starter/internal/core/repository/postgres/pool"
 )
 
 // TaskModel — структура для маппинга строки таблицы `todoapp.tasks` в Go-тип.

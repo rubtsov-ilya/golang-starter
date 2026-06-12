@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
-	core_errors "github.com/nilchan-social/golang-todoapp/internal/core/errors"
+	core_errors "github.com/rubtsov-ilya/golang-starter/internal/core/errors"
 )
 
 // DeleteUser удаляет пользователя по ID.

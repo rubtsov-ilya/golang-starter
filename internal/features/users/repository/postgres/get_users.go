@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/nilchan-social/golang-todoapp/internal/core/domain"
+	"github.com/rubtsov-ilya/golang-starter/internal/core/domain"
 )
 
 // GetUsers возвращает список пользователей с поддержкой пагинации.

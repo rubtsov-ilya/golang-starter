@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/nilchan-social/golang-todoapp/internal/core/domain"
-	core_errors "github.com/nilchan-social/golang-todoapp/internal/core/errors"
-	core_logger "github.com/nilchan-social/golang-todoapp/internal/core/logger"
+	"github.com/rubtsov-ilya/golang-starter/internal/core/domain"
+	core_errors "github.com/rubtsov-ilya/golang-starter/internal/core/errors"
+	core_logger "github.com/rubtsov-ilya/golang-starter/internal/core/logger"
 	"go.uber.org/zap"
 )
 

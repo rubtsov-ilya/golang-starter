@@ -5,9 +5,9 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/nilchan-social/golang-todoapp/internal/core/domain"
-	core_errors "github.com/nilchan-social/golang-todoapp/internal/core/errors"
-	core_postgres_pool "github.com/nilchan-social/golang-todoapp/internal/core/repository/postgres/pool"
+	"github.com/rubtsov-ilya/golang-starter/internal/core/domain"
+	core_errors "github.com/rubtsov-ilya/golang-starter/internal/core/errors"
+	core_postgres_pool "github.com/rubtsov-ilya/golang-starter/internal/core/repository/postgres/pool"
 )
 
 // UpdateTask обновляет задачу в БД и возвращает обновлённую версию.

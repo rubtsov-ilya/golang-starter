@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/nilchan-social/golang-todoapp/internal/core/domain"
-	core_errors "github.com/nilchan-social/golang-todoapp/internal/core/errors"
+	"github.com/rubtsov-ilya/golang-starter/internal/core/domain"
+	core_errors "github.com/rubtsov-ilya/golang-starter/internal/core/errors"
 )
 
 // GetUsers возвращает список пользователей с пагинацией.
