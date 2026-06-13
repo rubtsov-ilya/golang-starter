@@ -9,21 +9,20 @@ import (
 	"github.com/rubtsov-ilya/golang-starter/internal/core/domain"
 	core_errors "github.com/rubtsov-ilya/golang-starter/internal/core/errors"
 	core_logger "github.com/rubtsov-ilya/golang-starter/internal/core/logger"
-	"go.uber.org/zap"
 )
 
 // HTTPResponseHandler инкапсулирует логику записи HTTP-ответов.
 // Хранит логгер и ResponseWriter, чтобы обработчикам не нужно было
 // передавать их каждый раз явно.
 type HTTPResponseHandler struct {
-	log *core_logger.Logger
+	log core_logger.Logger
 	rw  http.ResponseWriter
 }
 
 // NewHTTPResponseHandler создаёт обработчик ответов для конкретного запроса.
 // Вызывается в начале каждого HTTP-обработчика.
 func NewHTTPResponseHandler(
-	log *core_logger.Logger,
+	log core_logger.Logger,
 	rw http.ResponseWriter,
 ) *HTTPResponseHandler {
 	return &HTTPResponseHandler{
@@ -41,7 +40,7 @@ func (h *HTTPResponseHandler) JSONResponse(
 	h.rw.WriteHeader(statusCode)
 
 	if err := json.NewEncoder(h.rw).Encode(responseBody); err != nil {
-		h.log.Error("write HTTP response", zap.Error(err))
+		h.log.Error("write HTTP response", core_logger.Error(err))
 	}
 }
 
@@ -56,7 +55,7 @@ func (h *HTTPResponseHandler) HTMLResponse(htmlFile domain.File) {
 
 	h.rw.Header().Set("Content-Type", "text/html; charset=utf-8")
 	if _, err := h.rw.Write(htmlFile.Buffer()); err != nil {
-		h.log.Error("write HTML HTTP response", zap.Error(err))
+		h.log.Error("write HTML HTTP response", core_logger.Error(err))
 	}
 }
 
@@ -72,7 +71,7 @@ func (h *HTTPResponseHandler) HTMLResponse(htmlFile domain.File) {
 func (h *HTTPResponseHandler) ErrorResponse(err error, msg string) {
 	var (
 		statusCode int
-		logFunc    func(string, ...zap.Field)
+		logFunc    func(string, ...core_logger.Field)
 	)
 
 	switch {
@@ -93,7 +92,7 @@ func (h *HTTPResponseHandler) ErrorResponse(err error, msg string) {
 		logFunc = h.log.Error
 	}
 
-	logFunc(msg, zap.Error(err))
+	logFunc(msg, core_logger.Error(err))
 
 	h.errorResponse(
 		statusCode,
@@ -108,7 +107,7 @@ func (h *HTTPResponseHandler) PanicResponse(p any, msg string) {
 	statusCode := http.StatusInternalServerError
 	err := fmt.Errorf("unexpected panic: %v", p)
 
-	h.log.Error(msg, zap.Error(err))
+	h.log.Error(msg, core_logger.Error(err))
 
 	h.errorResponse(
 		statusCode,

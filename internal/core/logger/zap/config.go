@@ -1,4 +1,4 @@
-package core_logger
+package core_zap_logger
 
 import (
 	"fmt"

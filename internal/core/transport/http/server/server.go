@@ -10,7 +10,6 @@ import (
 	core_logger "github.com/rubtsov-ilya/golang-starter/internal/core/logger"
 	core_http_middleware "github.com/rubtsov-ilya/golang-starter/internal/core/transport/http/middleware"
 	httpSwagger "github.com/swaggo/http-swagger/v2"
-	"go.uber.org/zap"
 )
 
 // HTTPServer — обёртка над стандартным net/http, добавляющая:
@@ -21,7 +20,7 @@ import (
 type HTTPServer struct {
 	mux    *http.ServeMux
 	config Config
-	log    *core_logger.Logger
+	log    core_logger.Logger
 
 	// middleware применяются ко всем маршрутам сервера (глобальные middleware).
 	middleware []core_http_middleware.Middleware
@@ -30,7 +29,7 @@ type HTTPServer struct {
 // NewHTTPServer создаёт HTTP-сервер с заданными глобальными middleware.
 func NewHTTPServer(
 	config Config,
-	log *core_logger.Logger,
+	log core_logger.Logger,
 	middleware ...core_http_middleware.Middleware,
 ) *HTTPServer {
 	return &HTTPServer{
@@ -68,15 +67,15 @@ func (s *HTTPServer) RegisterRoutes(routes ...Route) {
 //   - GET /swagger/doc.json — спецификация OpenAPI в формате JSON
 func (s *HTTPServer) RegisterSwagger() {
 	s.mux.Handle(
-		"GET /swagger/",
+		"GET /docs/",
 		httpSwagger.Handler(
-			httpSwagger.URL("/swagger/doc.json"),
+			httpSwagger.URL("/docs/doc.json"),
 			httpSwagger.DefaultModelsExpandDepth(-1),
 		),
 	)
 
 	s.mux.HandleFunc(
-		"GET /swagger/doc.json",
+		"GET /docs/doc.json",
 		func(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusOK)
@@ -109,7 +108,7 @@ func (s *HTTPServer) Run(ctx context.Context) error {
 	go func() {
 		defer close(ch)
 
-		s.log.Warn("start HTTP server", zap.String("addr", s.config.Addr))
+		s.log.Warn("start HTTP server", core_logger.String("addr", s.config.Addr))
 
 		err := server.ListenAndServe()
 

@@ -21,6 +21,9 @@ type Pool struct {
 	opTimeout time.Duration
 }
 
+// Проверка на этапе компиляции, что структура реализует интерфейс.
+var _ core_postgres_pool.Pool = (*Pool)(nil)
+
 // NewPool создаёт и проверяет пул соединений с PostgreSQL.
 // Ping() при инициализации гарантирует, что БД доступна до начала работы сервера.
 func NewPool(

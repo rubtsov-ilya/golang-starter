@@ -16,7 +16,6 @@ import (
 	"github.com/google/uuid"
 	core_logger "github.com/rubtsov-ilya/golang-starter/internal/core/logger"
 	core_http_response "github.com/rubtsov-ilya/golang-starter/internal/core/transport/http/response"
-	"go.uber.org/zap"
 )
 
 const (
@@ -82,15 +81,15 @@ func RequestID() Middleware {
 // обработчики автоматически логировали эти поля.
 //
 // Важно: этот middleware должен идти ПОСЛЕ RequestID, чтобы request_id уже был доступен.
-func Logger(log *core_logger.Logger) Middleware {
+func Logger(log core_logger.Logger) Middleware {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			requestID := r.Header.Get(requestIDHeader)
 
 			// Создаём дочерний логгер с дополнительными полями.
 			l := log.With(
-				zap.String("request_id", requestID),
-				zap.String("url", r.URL.String()),
+				core_logger.String("request_id", requestID),
+				core_logger.String("url", r.URL.String()),
 			)
 
 			ctx := core_logger.ToContext(r.Context(), l)
@@ -114,16 +113,16 @@ func Trace() Middleware {
 			before := time.Now()
 			log.Debug(
 				">>> incoming HTTP request",
-				zap.String("http_method", r.Method),
-				zap.Time("time", before.UTC()),
+				core_logger.String("http_method", r.Method),
+				core_logger.Any("time", before.UTC()),
 			)
 
 			next.ServeHTTP(rw, r)
 
 			log.Debug(
 				"<<< done HTTP request",
-				zap.Int("status_code", rw.GetStatusCode()),
-				zap.Duration("latency", time.Now().Sub(before)),
+				core_logger.Int("status_code", rw.GetStatusCode()),
+				core_logger.Any("latency", time.Now().Sub(before)),
 			)
 		})
 	}

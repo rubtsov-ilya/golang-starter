@@ -15,6 +15,7 @@ import (
 
 	core_config "github.com/rubtsov-ilya/golang-starter/internal/core/config"
 	core_logger "github.com/rubtsov-ilya/golang-starter/internal/core/logger"
+	"github.com/rubtsov-ilya/golang-starter/internal/core/logger/zap"
 	core_pgx_pool "github.com/rubtsov-ilya/golang-starter/internal/core/repository/postgres/pool/pgx"
 	core_http_middleware "github.com/rubtsov-ilya/golang-starter/internal/core/transport/http/middleware"
 	core_http_server "github.com/rubtsov-ilya/golang-starter/internal/core/transport/http/server"
@@ -30,8 +31,6 @@ import (
 	web_fs_repository "github.com/rubtsov-ilya/golang-starter/internal/features/web/repository/file_system"
 	web_service "github.com/rubtsov-ilya/golang-starter/internal/features/web/service"
 	web_transport_http "github.com/rubtsov-ilya/golang-starter/internal/features/web/transport/http"
-	"go.uber.org/zap"
-
 	// Импорт пакета docs регистрирует Swagger-спецификацию в глобальной переменной.
 	// Сам пакет не используется напрямую — нужен только side-effect от init().
 	_ "github.com/rubtsov-ilya/golang-starter/docs"
@@ -60,14 +59,14 @@ func main() {
 
 	// Инициализируем логгер приложения
 	// Пишет одновременно в stdout и в файл (см. internal/core/logger).
-	logger, err := core_logger.NewLogger(core_logger.NewConfigMust())
+	logger, err := core_zap_logger.NewLogger(core_zap_logger.NewConfigMust())
 	if err != nil {
 		fmt.Println("failed to init application logger:", err)
 		os.Exit(1)
 	}
 	defer logger.Close()
 
-	logger.Debug("application time zone", zap.Any("zone", time.Local))
+	logger.Debug("application time zone", core_logger.Any("zone", time.Local))
 
 	// Создаём пулл соединений с PostgreSQL через библиотеку pgx.
 	// Пул переиспользует соединения, что гораздо эффективнее,
@@ -78,7 +77,7 @@ func main() {
 		core_pgx_pool.NewConfigMust(),
 	)
 	if err != nil {
-		logger.Fatal("failed to init postgres connection pool", zap.Error(err))
+		logger.Fatal("failed to init postgres connection pool", core_logger.Error(err))
 	}
 	defer postgresPool.Close()
 
@@ -87,22 +86,22 @@ func main() {
 	// Каждый слой знает только об интерфейсе нижележащего.
 	// Это обеспечивает слабую связанность (loose coupling) и тестируемость.
 
-	logger.Debug("initializing feature", zap.String("feature", "users"))
+	logger.Debug("initializing feature", core_logger.String("feature", "users"))
 	usersRepository := users_postgres_repository.NewUsersRepository(postgresPool)
 	usersService := users_service.NewUsersService(usersRepository)
 	usersTransportHTTP := users_transport_http.NewUsersHTTPHandler(usersService)
 
-	logger.Debug("initializing feature", zap.String("feature", "tasks"))
+	logger.Debug("initializing feature", core_logger.String("feature", "tasks"))
 	tasksRepository := tasks_postgres_repository.NewTasksRepository(postgresPool)
 	tasksService := tasks_service.NewTasksService(tasksRepository)
 	tasksTransportHTTP := tasks_transport_http.NewTasksHTTPHandler(tasksService)
 
-	logger.Debug("initializing feature", zap.String("feature", "statistics"))
+	logger.Debug("initializing feature", core_logger.String("feature", "statistics"))
 	statisticsRepository := statistics_postgres_repository.NewStatisticsRepository(postgresPool)
 	statisticsService := statistics_service.NewStatisticsService(statisticsRepository)
 	statisticsTransportHTTP := statistics_transport_http.NewStatisticsHTTPHandler(statisticsService)
 
-	logger.Debug("initializing feature", zap.String("feature", "web"))
+	logger.Debug("initializing feature", core_logger.String("feature", "web"))
 	webRepository := web_fs_repository.NewWebRepository()
 	webService := web_service.NewWebService(webRepository)
 	webTransportHTTP := web_transport_http.NewWebHTTPHandler(webService)
@@ -151,6 +150,6 @@ func main() {
 	// Запускаем сервер. Блокируется до получения сигнала завершения.
 	// После сигнала выполняет graceful shutdown: ждёт завершения активных запросов.
 	if err := httpServer.Run(ctx); err != nil {
-		logger.Error("HTTP server run error", zap.Error(err))
+		logger.Error("HTTP server run error", core_logger.Error(err))
 	}
 }
