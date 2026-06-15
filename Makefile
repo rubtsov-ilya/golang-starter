@@ -82,6 +82,16 @@ todoapp-run: ## Golang приложение: Запустить локально
 	go mod tidy
 	go run $(PROJECT_ROOT)/cmd/todoapp/main.go
 
+todoapp-stop: ## Golang приложение: Принудительно остановить локально запущенное приложение
+ifeq ($(OS),Windows_NT)
+	@taskkill /F /IM main.exe 2>NUL || exit 0
+else
+	@pkill -f main || exit 0
+endif
+
+stop-all: todoapp-stop ## env & app: Остановить приложение и всё окружение (БД и др.)
+	@docker compose down
+
 todoapp-deploy: ## Golang приложение: Запустить в Docker Compose сервисе (для деплоя)
 	@docker compose up -d --build todoapp
 
