@@ -8,8 +8,8 @@ export PROJECT_ROOT=$(CURDIR)
 .DEFAULT_GOAL := help
 
 
-env-up: ## env: Запустить окружение проекта
-	@docker compose up -d todoapp-postgres
+env-up: ## env: Запустить окружение проекта и дождаться готовности БД
+	@docker compose up -d --wait todoapp-postgres
 
 env-down: ## env: Остановить окружение проекта
 	@docker compose down todoapp-postgres
@@ -74,6 +74,8 @@ endif
 		-path /migrations \
 		-database postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@todoapp-postgres:5432/${POSTGRES_DB}?sslmode=disable \
 		"$(action)"
+
+run: env-up env-port-forward migrate-up todoapp-run ## env & app: Запустить всё окружение, применить миграции и запустить приложение локально
 
 todoapp-run: LOGGER_FOLDER=$(PROJECT_ROOT)/out/logs
 todoapp-run: POSTGRES_HOST=localhost
