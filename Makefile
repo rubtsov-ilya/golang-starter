@@ -100,6 +100,8 @@ todoapp-deploy: ## Golang приложение: Запустить в Docker Com
 todoapp-undeploy: ## Golang приложение: Остановить Docker Compose сервис
 	@docker compose down todoapp
 
+lint: ## Запуск линтера
+	golangci-lint run
 
 help: ## Показать справку по командам
 	@echo "=== Центр управления проектом ==="

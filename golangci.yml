@@ -1,0 +1,22 @@
+run:
+  timeout: 5m
+  modules-download-mode: readonly
+
+linters:
+  # Отключаем все по умолчанию, чтобы явно включить нужные
+  disable-all: true
+  enable:
+    - govet        # Стандартные проверки Go
+    - errcheck     # Проверка обработки ошибок
+    - staticcheck  # Продвинутый статический анализ
+    - unused       # Поиск неиспользуемого кода (переменные, функции, типы)
+    - gosimple     # Предлагает упрощения кода
+    - ineffassign  # Находит бесполезные присваивания переменным
+    - typecheck    # Стандартный парсер типов Go
+    - revive       # Замена устаревшему golint (стиль кода, именование)
+    - gocyclo      # Проверяет цикломатическую сложность функций (чтобы не были слишком огромными)
+
+issues:
+  exclude-use-default: false
+  max-issues-per-linter: 0
+  max-same-issues: 0
