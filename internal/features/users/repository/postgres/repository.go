@@ -7,14 +7,17 @@ import (
 
 // UsersRepository — реализация репозитория пользователей на базе PostgreSQL.
 type UsersRepository struct {
-	pool core_postgres_pool.Pool
+	writer core_postgres_pool.Pool
+	reader core_postgres_pool.Pool
 }
 
 // NewUsersRepository создаёт репозиторий пользователей с переданным пулом соединений.
 func NewUsersRepository(
-	pool core_postgres_pool.Pool,
+	writer core_postgres_pool.Pool,
+	reader core_postgres_pool.Pool,
 ) *UsersRepository {
 	return &UsersRepository{
-		pool: pool,
+		writer: writer,
+		reader: reader,
 	}
 }

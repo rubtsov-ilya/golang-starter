@@ -28,7 +28,7 @@ var _ core_postgres_pool.Pool = (*Pool)(nil)
 // Ping() при инициализации гарантирует, что БД доступна до начала работы сервера.
 func NewPool(
 	ctx context.Context,
-	config Config,
+	config NodeConfig,
 ) (*Pool, error) {
 	connectionString := fmt.Sprintf(
 		"postgres://%s:%s@%s:%s/%s?sslmode=disable",
@@ -43,6 +43,8 @@ func NewPool(
 	if err != nil {
 		return nil, fmt.Errorf("parse pgxconfig: %w", err)
 	}
+
+	pgxconfig.MaxConns = config.MaxConns
 
 	pool, err := pgxpool.NewWithConfig(ctx, pgxconfig)
 	if err != nil {

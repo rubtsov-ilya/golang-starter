@@ -17,7 +17,7 @@ func (r *UsersRepository) UpdateUser(
 	ctx context.Context,
 	user domain.User,
 ) (domain.User, error) {
-	ctx, cancel := context.WithTimeout(ctx, r.pool.OpTimeout())
+	ctx, cancel := context.WithTimeout(ctx, r.writer.OpTimeout())
 	defer cancel()
 
 	query := `
@@ -34,7 +34,7 @@ func (r *UsersRepository) UpdateUser(
 		phone_number;
 	`
 
-	row := r.pool.QueryRow(
+	row := r.writer.QueryRow(
 		ctx,
 		query,
 		user.FullName,

@@ -7,14 +7,17 @@ import core_postgres_pool "github.com/rubtsov-ilya/golang-starter/internal/core/
 
 // StatisticsRepository — репозиторий для получения данных, необходимых для статистики.
 type StatisticsRepository struct {
-	pool core_postgres_pool.Pool
+	writer core_postgres_pool.Pool
+	reader core_postgres_pool.Pool
 }
 
-// NewStatisticsRepository создаёт репозиторий статистики с переданным пулом соединений.
+// NewStatisticsRepository создаёт репозиторий статистики с переданными пулами соединений.
 func NewStatisticsRepository(
-	pool core_postgres_pool.Pool,
+	writer core_postgres_pool.Pool,
+	reader core_postgres_pool.Pool,
 ) *StatisticsRepository {
 	return &StatisticsRepository{
-		pool: pool,
+		writer: writer,
+		reader: reader,
 	}
 }

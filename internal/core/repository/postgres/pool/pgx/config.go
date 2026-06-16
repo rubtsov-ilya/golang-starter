@@ -7,19 +7,21 @@ import (
 	"github.com/kelseyhightower/envconfig"
 )
 
-// Config хранит параметры подключения к PostgreSQL.
-// Все поля читаются из переменных окружения с префиксом "POSTGRES_":
-// POSTGRES_HOST, POSTGRES_PORT, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_TIMEOUT.
-type Config struct {
-	Host     string `envconfig:"HOST"     required:"true"`
-	Port     string `envconfig:"PORT"     default:"5432"`
-	User     string `envconfig:"USER"     required:"true"`
-	Password string `envconfig:"PASSWORD" required:"true"`
-	Database string `envconfig:"DB"       required:"true"`
+// NodeConfig описывает параметры подключения к конкретному инстансу (узлу) базы данных.
+type NodeConfig struct {
+	Host     string        `envconfig:"HOST"     required:"true"`
+	Port     string        `envconfig:"PORT"     default:"5432"`
+	User     string        `envconfig:"USER"     required:"true"`
+	Password string        `envconfig:"PASSWORD" required:"true"`
+	Database string        `envconfig:"DB"       required:"true"`
+	Timeout  time.Duration `envconfig:"TIMEOUT"  required:"true"`
+	MaxConns int32         `envconfig:"MAX_CONNS" default:"20"`
+}
 
-	// Timeout — максимальное время выполнения одного запроса к базе данных.
-	// Используется репозиториями через Pool.OpTimeout() + context.WithTimeout.
-	Timeout time.Duration `envconfig:"TIMEOUT"  required:"true"`
+// Config объединяет настройки для Master и Replica.
+type Config struct {
+	Master  NodeConfig `envconfig:"MASTER"`
+	Replica NodeConfig `envconfig:"REPLICA"`
 }
 
 // NewConfig читает конфигурацию пула из переменных окружения.

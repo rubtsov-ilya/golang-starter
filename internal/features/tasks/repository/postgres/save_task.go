@@ -21,7 +21,7 @@ func (r *TasksRepository) SaveTask(
 	ctx context.Context,
 	task domain.Task,
 ) (domain.Task, error) {
-	ctx, cancel := context.WithTimeout(ctx, r.pool.OpTimeout())
+	ctx, cancel := context.WithTimeout(ctx, r.writer.OpTimeout())
 	defer cancel()
 
 	query := `
@@ -30,7 +30,7 @@ func (r *TasksRepository) SaveTask(
 	RETURNING id, version, title, description, completed, created_at, completed_at, author_user_id;
 	`
 
-	row := r.pool.QueryRow(
+	row := r.writer.QueryRow(
 		ctx,
 		query,
 		task.ID,

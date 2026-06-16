@@ -21,7 +21,7 @@ func (r *StatisticsRepository) GetTasks(
 	from *time.Time,
 	to *time.Time,
 ) ([]domain.Task, error) {
-	ctx, cancel := context.WithTimeout(ctx, r.pool.OpTimeout())
+	ctx, cancel := context.WithTimeout(ctx, r.reader.OpTimeout())
 	defer cancel()
 
 	var queryBuilder strings.Builder
@@ -55,7 +55,7 @@ func (r *StatisticsRepository) GetTasks(
 
 	queryBuilder.WriteString(" ORDER BY id ASC")
 
-	rows, err := r.pool.Query(ctx, queryBuilder.String(), args...)
+	rows, err := r.reader.Query(ctx, queryBuilder.String(), args...)
 	if err != nil {
 		return nil, fmt.Errorf("select tasks: %w", err)
 	}

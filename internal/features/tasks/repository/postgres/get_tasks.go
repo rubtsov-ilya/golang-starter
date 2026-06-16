@@ -20,7 +20,7 @@ func (r *TasksRepository) GetTasks(
 	limit *int,
 	offset *int,
 ) ([]domain.Task, error) {
-	ctx, cancel := context.WithTimeout(ctx, r.pool.OpTimeout())
+	ctx, cancel := context.WithTimeout(ctx, r.reader.OpTimeout())
 	defer cancel()
 
 	query := `
@@ -41,7 +41,7 @@ func (r *TasksRepository) GetTasks(
 		query = fmt.Sprintf(query, "")
 	}
 
-	rows, err := r.pool.Query(
+	rows, err := r.reader.Query(
 		ctx,
 		query,
 		args...,

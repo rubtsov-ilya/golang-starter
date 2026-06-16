@@ -13,7 +13,7 @@ func (r *UsersRepository) SaveUser(
 	ctx context.Context,
 	user domain.User,
 ) (domain.User, error) {
-	ctx, cancel := context.WithTimeout(ctx, r.pool.OpTimeout())
+	ctx, cancel := context.WithTimeout(ctx, r.writer.OpTimeout())
 	defer cancel()
 
 	query := `
@@ -22,7 +22,7 @@ func (r *UsersRepository) SaveUser(
 	RETURNING id, version, full_name, phone_number;
 	`
 
-	row := r.pool.QueryRow(
+	row := r.writer.QueryRow(
 		ctx,
 		query,
 		user.ID,

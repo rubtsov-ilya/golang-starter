@@ -16,7 +16,7 @@ func (r *TasksRepository) DeleteTask(
 	ctx context.Context,
 	id uuid.UUID,
 ) error {
-	ctx, cancel := context.WithTimeout(ctx, r.pool.OpTimeout())
+	ctx, cancel := context.WithTimeout(ctx, r.writer.OpTimeout())
 	defer cancel()
 
 	query := `
@@ -24,7 +24,7 @@ func (r *TasksRepository) DeleteTask(
 	WHERE id=$1;
 	`
 
-	cmdTag, err := r.pool.Exec(ctx, query, id)
+	cmdTag, err := r.writer.Exec(ctx, query, id)
 	if err != nil {
 		return fmt.Errorf("exec query: %w", err)
 	}

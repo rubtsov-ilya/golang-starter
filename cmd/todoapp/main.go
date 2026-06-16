@@ -71,15 +71,21 @@ func main() {
 	// Создаём пулл соединений с PostgreSQL через библиотеку pgx.
 	// Пул переиспользует соединения, что гораздо эффективнее,
 	// чем открывать новое соединение на каждый SQL запрос.
-	logger.Debug("initializing postgres connection pool")
-	postgresPool, err := core_pgx_pool.NewPool(
-		ctx,
-		core_pgx_pool.NewConfigMust(),
-	)
+	logger.Debug("initializing postgres connection pools")
+	dbConfig := core_pgx_pool.NewConfigMust()
+	logger.Debug("initializing postgres master connection pool")
+	masterPool, err := core_pgx_pool.NewPool(ctx, dbConfig.Master)
 	if err != nil {
-		logger.Fatal("failed to init postgres connection pool", core_logger.Error(err))
+		logger.Fatal("failed to init postgres master connection pool", core_logger.Error(err))
 	}
-	defer postgresPool.Close()
+	defer masterPool.Close()
+
+	logger.Debug("initializing postgres replica connection pool")
+	replicaPool, err := core_pgx_pool.NewPool(ctx, dbConfig.Replica)
+	if err != nil {
+		logger.Fatal("failed to init postgres replica connection pool", core_logger.Error(err))
+	}
+	defer replicaPool.Close()
 
 	// Ручное внедрение зависимостей (Dependency Injection):
 	// Repository → Service → HTTP Handler.
@@ -87,17 +93,17 @@ func main() {
 	// Это обеспечивает слабую связанность (loose coupling) и тестируемость.
 
 	logger.Debug("initializing feature", core_logger.String("feature", "users"))
-	usersRepository := users_postgres_repository.NewUsersRepository(postgresPool)
+	usersRepository := users_postgres_repository.NewUsersRepository(masterPool, replicaPool)
 	usersService := users_service.NewUsersService(usersRepository)
 	usersTransportHTTP := users_transport_http.NewUsersHTTPHandler(usersService)
 
 	logger.Debug("initializing feature", core_logger.String("feature", "tasks"))
-	tasksRepository := tasks_postgres_repository.NewTasksRepository(postgresPool)
+	tasksRepository := tasks_postgres_repository.NewTasksRepository(masterPool, replicaPool)
 	tasksService := tasks_service.NewTasksService(tasksRepository)
 	tasksTransportHTTP := tasks_transport_http.NewTasksHTTPHandler(tasksService)
 
 	logger.Debug("initializing feature", core_logger.String("feature", "statistics"))
-	statisticsRepository := statistics_postgres_repository.NewStatisticsRepository(postgresPool)
+	statisticsRepository := statistics_postgres_repository.NewStatisticsRepository(masterPool, replicaPool)
 	statisticsService := statistics_service.NewStatisticsService(statisticsRepository)
 	statisticsTransportHTTP := statistics_transport_http.NewStatisticsHTTPHandler(statisticsService)
 

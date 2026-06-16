@@ -17,7 +17,7 @@ func (r *UsersRepository) GetUser(
 	ctx context.Context,
 	id uuid.UUID,
 ) (domain.User, error) {
-	ctx, cancel := context.WithTimeout(ctx, r.pool.OpTimeout())
+	ctx, cancel := context.WithTimeout(ctx, r.reader.OpTimeout())
 	defer cancel()
 
 	query := `
@@ -26,7 +26,7 @@ func (r *UsersRepository) GetUser(
 	WHERE id=$1;
 	`
 
-	row := r.pool.QueryRow(ctx, query, id)
+	row := r.reader.QueryRow(ctx, query, id)
 
 	var userModel UserModel
 	if err := userModel.Scan(row); err != nil {

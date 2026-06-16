@@ -9,14 +9,17 @@ import core_postgres_pool "github.com/rubtsov-ilya/golang-starter/internal/core/
 // Принимает интерфейс core_postgres_pool.Pool, а не конкретный тип pgx,
 // что позволяет подменить реализацию БД в тестах без изменения этого кода.
 type TasksRepository struct {
-	pool core_postgres_pool.Pool
+	writer core_postgres_pool.Pool
+	reader core_postgres_pool.Pool
 }
 
-// NewTasksRepository создаёт репозиторий задач с переданным пулом соединений.
+// NewTasksRepository создаёт репозиторий задач с переданными пулами соединений.
 func NewTasksRepository(
-	pool core_postgres_pool.Pool,
+	writer core_postgres_pool.Pool,
+	reader core_postgres_pool.Pool,
 ) *TasksRepository {
 	return &TasksRepository{
-		pool: pool,
+		writer: writer,
+		reader: reader,
 	}
 }
