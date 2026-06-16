@@ -122,7 +122,7 @@ func Trace() Middleware {
 			log.Debug(
 				"<<< done HTTP request",
 				core_logger.Int("status_code", rw.GetStatusCode()),
-				core_logger.Any("latency", time.Now().Sub(before)),
+				core_logger.Any("latency", time.Since(before)),
 			)
 		})
 	}
