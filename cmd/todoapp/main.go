@@ -114,7 +114,7 @@ func main() {
 
 	// Собираем HTTP-сервер с цепочкой middleware.
 	// Middleware применяются ко всем маршрутам (Route) в порядке объявления:
-	// CORS → RequestID → Logger → Trace → Panic recovery.
+	// CORS → RequestID → Logger → Trace → Timeout → Panic recovery.
 	logger.Debug("initializing HTTP server")
 	httpConfig := core_http_server.NewConfigMust()
 	httpServer := core_http_server.NewHTTPServer(
@@ -124,6 +124,7 @@ func main() {
 		core_http_middleware.RequestID(),
 		core_http_middleware.Logger(logger),
 		core_http_middleware.Trace(),
+		core_http_middleware.Timeout(httpConfig.Timeout),
 		core_http_middleware.Panic(),
 	)
 

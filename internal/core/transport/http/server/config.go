@@ -22,6 +22,9 @@ type Config struct {
 	// AllowedOrigins — список разрешённых origins для CORS.
 	// envconfig парсит строку с запятой как слайс: "http://a.com,http://b.com".
 	AllowedOrigins []string `envconfig:"ALLOWED_ORIGINS" required:"true"`
+
+	// Timeout — максимальное время выполнения HTTP-запроса мидлвейром таймаута.
+	Timeout time.Duration `envconfig:"TIMEOUT" default:"15s"`
 }
 
 // NewConfig читает конфигурацию сервера из переменных окружения.

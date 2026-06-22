@@ -6,14 +6,16 @@
 //
 // Архитектурная схема:
 //
-//	Request → CORS → RequestID → Logger → Trace → Panic → Handler → Response
+//	Request → CORS → RequestID → Logger → Trace → Timeout → Panic → Handler → Response
 package core_http_middleware
 
 import (
+	"context"
 	"net/http"
 	"time"
 
 	"github.com/google/uuid"
+	core_errors "github.com/rubtsov-ilya/golang-starter/internal/core/errors"
 	core_logger "github.com/rubtsov-ilya/golang-starter/internal/core/logger"
 	core_http_response "github.com/rubtsov-ilya/golang-starter/internal/core/transport/http/response"
 )
@@ -124,6 +126,42 @@ func Trace() Middleware {
 				core_logger.Int("status_code", rw.GetStatusCode()),
 				core_logger.Any("latency", time.Since(before)),
 			)
+		})
+	}
+}
+
+// Timeout
+func Timeout(d time.Duration) Middleware {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			ctx, cancel := context.WithTimeout(r.Context(), d)
+			defer cancel()
+			r = r.WithContext(ctx)
+			log := core_logger.FromContext(ctx)
+			tw := core_http_response.NewTimeoutResponseWriter(w)
+			ch := make(chan struct{})
+
+			go func() {
+				defer close(ch)
+				next.ServeHTTP(w, r)
+			}()
+
+			select {
+			case <-ch:
+				// Обработчик успел завершиться вовремя.
+				// Сбрасываем накопленный буфер в оригинальный w (сеть).
+				if err := tw.FlushResponse(); err != nil {
+					log.Error("failed to flush timeout response", core_logger.Error(err))
+				}
+			case <-ctx.Done():
+				// Время вышло. Пытаемся объявить таймаут.
+				if tw.TryTimeout() {
+					// Записываем 504 JSON прямо в оригинальный w.
+					responseHandler := core_http_response.NewHTTPResponseHandler(log, w)
+					responseHandler.ErrorResponse(core_errors.ErrTimeout, "request timed out")
+				}
+			}
+
 		})
 	}
 }

@@ -87,6 +87,10 @@ func (h *HTTPResponseHandler) ErrorResponse(err error, msg string) {
 		statusCode = http.StatusConflict
 		logFunc = h.log.Warn
 
+	case errors.Is(err, core_errors.ErrTimeout):
+		statusCode = http.StatusGatewayTimeout
+		logFunc = h.log.Error
+
 	default:
 		statusCode = http.StatusInternalServerError
 		logFunc = h.log.Error

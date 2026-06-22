@@ -21,4 +21,7 @@ var (
 	// ErrConflict — конфликт при обновлении, обычно из-за конкурентного
 	// изменения той же записи (HTTP 409).
 	ErrConflict = errors.New("conflict")
+
+	// ErrTimeout — время ожидания запроса истекло (HTTP 504).
+	ErrTimeout = errors.New("timeout")
 )
