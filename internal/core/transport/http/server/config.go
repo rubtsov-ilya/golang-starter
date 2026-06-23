@@ -25,6 +25,12 @@ type Config struct {
 
 	// Timeout — максимальное время выполнения HTTP-запроса мидлвейром таймаута.
 	Timeout time.Duration `envconfig:"TIMEOUT" default:"15s"`
+
+	// RateLimitRPS — количество разрешенных запросов в секунду (RPS) на один IP.
+	RateLimitRPS float64 `envconfig:"RATE_LIMIT_RPS" default:"10"`
+
+	// RateLimitBurst — максимальный всплеск (burst) запросов для одного IP.
+	RateLimitBurst int `envconfig:"RATE_LIMIT_BURST" default:"20"`
 }
 
 // NewConfig читает конфигурацию сервера из переменных окружения.

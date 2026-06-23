@@ -28,8 +28,8 @@
             --warning-dim: rgba(210,153,34,0.12);
             --purple:      #a78bfa;
             --shadow:      0 8px 32px rgba(0,0,0,0.5);
-            --r:  9px;
-            --r-lg: 14px;
+            --rps:  9px;
+            --rps-lg: 14px;
         }
 
         /* ── Light theme ── */
@@ -126,7 +126,7 @@
             align-items: center;
             gap: 14px;
             padding: 14px 18px;
-            border-radius: var(--r);
+            border-radius: var(--rps);
             border: none;
             background: transparent;
             color: var(--text-muted);
@@ -148,7 +148,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 14px 16px;
-            border-radius: var(--r);
+            border-radius: var(--rps);
             background: var(--bg-3);
             border: 1px solid var(--border);
         }
@@ -225,7 +225,7 @@
             align-items: center;
             gap: 9px;
             padding: 13px 26px;
-            border-radius: var(--r);
+            border-radius: var(--rps);
             border: none;
             font-family: inherit;
             font-size: 17px;
@@ -262,7 +262,7 @@
             padding: 20px 26px;
             background: var(--bg-2);
             border: 1px solid var(--border);
-            border-radius: var(--r-lg);
+            border-radius: var(--rps-lg);
             margin-bottom: 24px;
             flex-wrap: wrap;
             transition: background 0.2s, border-color 0.2s;
@@ -281,7 +281,7 @@
             padding: 11px 14px;
             background: var(--bg-3);
             border: 1px solid var(--border);
-            border-radius: var(--r);
+            border-radius: var(--rps);
             color: var(--text);
             font-family: inherit;
             font-size: 17px;
@@ -297,7 +297,7 @@
         .page-size-wrap {
             display: flex; align-items: center;
             background: var(--bg-3); border: 1px solid var(--border);
-            border-radius: var(--r); overflow: hidden;
+            border-radius: var(--rps); overflow: hidden;
             transition: border-color 0.15s, box-shadow 0.15s;
         }
         .page-size-wrap:focus-within {
@@ -352,7 +352,7 @@
             padding: 11px 14px; padding-right: 36px;
             background: var(--bg-3);
             border: 1px solid var(--border);
-            border-radius: var(--r);
+            border-radius: var(--rps);
             color: var(--text);
             font-family: inherit; font-size: 17px;
             cursor: pointer; user-select: none;
@@ -396,7 +396,7 @@
             min-width: max(100%, 240px);
             background: var(--bg-2);
             border: 1px solid var(--border);
-            border-radius: var(--r-lg);
+            border-radius: var(--rps-lg);
             box-shadow: 0 16px 48px rgba(0,0,0,0.35), 0 4px 12px rgba(0,0,0,0.2);
             z-index: 9999; overflow: hidden;
             transform-origin: top center;
@@ -460,7 +460,7 @@
         .task-card {
             background: var(--bg-2);
             border: 1px solid var(--border);
-            border-radius: var(--r-lg);
+            border-radius: var(--rps-lg);
             padding: 24px 28px;
             display: flex;
             align-items: flex-start;
@@ -565,7 +565,7 @@
         .user-card {
             background: var(--bg-2);
             border: 1px solid var(--border);
-            border-radius: var(--r-lg);
+            border-radius: var(--rps-lg);
             padding: 30px;
             transition: border-color 0.15s, background 0.2s;
         }
@@ -610,7 +610,7 @@
         .stat-card {
             background: var(--bg-2);
             border: 1px solid var(--border);
-            border-radius: var(--r-lg);
+            border-radius: var(--rps-lg);
             padding: 34px;
             position: relative;
             overflow: hidden;
@@ -661,7 +661,7 @@
         .progress-card {
             background: var(--bg-2);
             border: 1px solid var(--border);
-            border-radius: var(--r-lg);
+            border-radius: var(--rps-lg);
             padding: 30px;
             transition: background 0.2s, border-color 0.2s;
         }
@@ -698,7 +698,7 @@
             padding: 14px 18px;
             background: var(--bg-3);
             border: 1px solid var(--border);
-            border-radius: var(--r);
+            border-radius: var(--rps);
             color: var(--text);
             font-family: inherit;
             font-size: 18px;
@@ -740,7 +740,7 @@
         .modal {
             background: var(--bg-2);
             border: 1px solid var(--border);
-            border-radius: var(--r-lg);
+            border-radius: var(--rps-lg);
             padding: 40px;
             width: 100%; max-width: 600px;
             transform: translateY(18px) scale(0.98);
@@ -769,7 +769,7 @@
         }
         .toast {
             padding: 18px 22px;
-            border-radius: var(--r);
+            border-radius: var(--rps);
             font-size: 17px;
             font-weight: 500;
             display: flex; align-items: center; gap: 12px;
@@ -1134,7 +1134,7 @@
             <button class="nav-item" data-tab="users" onclick="switchTab('users')">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                    <circle cx="9" cy="7" r="4"/>
+                    <circle cx="9" cy="7" rps="4"/>
                     <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
                     <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                 </svg>
@@ -1503,7 +1503,7 @@ function cddRenderList(id) {
                 <span class="cdd-avatar">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                        <circle cx="9" cy="7" r="4"/>
+                        <circle cx="9" cy="7" rps="4"/>
                         <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
                         <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                     </svg>
@@ -1567,7 +1567,7 @@ function toggleTheme(isLight) {
     if (isLight) {
         label.innerHTML = `
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px">
-                <circle cx="12" cy="12" r="5"/>
+                <circle cx="12" cy="12" rps="5"/>
                 <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
                 <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
                 <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
@@ -1702,7 +1702,7 @@ function showError(id, msg) {
     document.getElementById(id).innerHTML = `
         <div class="error-state">
             <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <circle cx="12" cy="12" r="10"/>
+                <circle cx="12" cy="12" rps="10"/>
                 <line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
             </svg>
             <h3>Ошибка загрузки</h3><p>${esc(msg)}</p>
@@ -1712,8 +1712,8 @@ function showError(id, msg) {
 // ─── Toasts ──────────────────────────────────────────────
 const TOAST_ICONS = {
     success: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>`,
-    error:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`,
-    info:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
+    error:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" rps="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`,
+    info:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" rps="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
 };
 function toast(msg, type = 'info') {
     const el = document.createElement('div');
@@ -1842,7 +1842,7 @@ function taskCard(t) {
             ${t.description ? `<div class="task-desc">${esc(t.description)}</div>` : ''}
             <div class="task-meta">
                 <span class="chip">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" rps="4"/></svg>
                     ${authorLabel}
                 </span>
                 ${t.created_at ? `<span class="chip">
@@ -1854,7 +1854,7 @@ function taskCard(t) {
                         : `○ В работе${pendingAge ? ' · ' + pendingAge : ''}`}
                 </span>
                 ${duration ? `<span class="chip chip-duration">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" rps="10"/><polyline points="12 6 12 12 16 14"/></svg>
                     ${duration}
                 </span>` : ''}
                 <span class="chip chip-version">v${t.version}</span>
@@ -1995,7 +1995,7 @@ function renderUsers(users) {
             <div class="empty">
                 <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                    <circle cx="9" cy="7" r="4"/>
+                    <circle cx="9" cy="7" rps="4"/>
                     <line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/>
                 </svg>
                 <h3>Пользователей пока нет</h3>
@@ -2224,7 +2224,7 @@ function renderStats(s) {
             <div class="stat-card c-purple">
                 <div class="stat-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"/>
+                        <circle cx="12" cy="12" rps="10"/>
                         <polyline points="12 6 12 12 16 14"/>
                     </svg>
                 </div>

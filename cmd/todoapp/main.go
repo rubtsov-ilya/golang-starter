@@ -117,12 +117,16 @@ func main() {
 	// CORS → RequestID → Logger → Trace → Timeout → Panic recovery.
 	logger.Debug("initializing HTTP server")
 	httpConfig := core_http_server.NewConfigMust()
+	limiter := core_http_middleware.NewIPRateLimiter(httpConfig.RateLimitRPS, httpConfig.RateLimitBurst, 1*time.Minute,
+		3*time.Minute)
+	defer limiter.Close()
 	httpServer := core_http_server.NewHTTPServer(
 		httpConfig,
 		logger,
 		core_http_middleware.CORS(httpConfig.AllowedOrigins),
 		core_http_middleware.RequestID(),
 		core_http_middleware.Logger(logger),
+		limiter.RateLimiter(),
 		core_http_middleware.Trace(),
 		core_http_middleware.Timeout(httpConfig.Timeout),
 		core_http_middleware.Panic(),

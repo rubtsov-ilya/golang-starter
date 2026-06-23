@@ -24,4 +24,7 @@ var (
 
 	// ErrTimeout — время ожидания запроса истекло (HTTP 504).
 	ErrTimeout = errors.New("timeout")
+
+	// ErrTooManyRequests — превышен лимит запросов (HTTP 429).
+	ErrTooManyRequests = errors.New("too many requests")
 )
