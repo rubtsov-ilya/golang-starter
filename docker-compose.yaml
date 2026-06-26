@@ -38,6 +38,24 @@ services:
       retries: 5
       start_period: 2s
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.6.3
+    container_name: todoapp-env-keycloak
+    command: start-dev
+    environment:
+      - KC_BOOTSTRAP_ADMIN_USERNAME=${KEYCLOAK_USER}
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=${KEYCLOAK_PASSWORD}
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://todoapp-postgres:5432/${POSTGRES_MASTER_DB}
+      - KC_DB_USERNAME=${POSTGRES_MASTER_USER}
+      - KC_DB_PASSWORD=${POSTGRES_MASTER_PASSWORD}
+      - KC_DB_SCHEMA=public
+    ports:
+      - "8081:8080"
+    depends_on:
+      todoapp-postgres:
+        condition: service_healthy
+
   todoapp-postgres-migrate:
     image: migrate/migrate:v4.19.1
     volumes:

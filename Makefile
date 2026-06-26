@@ -9,15 +9,15 @@ export PROJECT_ROOT=$(CURDIR)
 
 
 env-up: ## env: Запустить окружение проекта и дождаться готовности БД
-	@docker compose up -d --wait todoapp-postgres
+	@docker compose up -d --wait todoapp-postgres keycloak
 
 env-down: ## env: Остановить окружение проекта
-	@docker compose down todoapp-postgres
+	@docker compose down todoapp-postgres keycloak
 
 env-cleanup: ## env: Очистить окружение проекта
 	@read -p "Очистить все volume файлы окружения? Опасность утери данных. [y/N]: " ans; \
 	if [ "$$ans" = "y" ]; then \
-		docker compose down todoapp-postgres port-forwarder && \
+		docker compose down todoapp-postgres port-forwarder keycloak && \
 		rm -rf ${PROJECT_ROOT}/out/pgdata && \
 		echo "Файлы окружения очищены"; \
 	else \

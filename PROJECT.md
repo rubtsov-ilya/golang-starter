@@ -1,19 +1,22 @@
 # Руководство по использованию проекта (Makefile)
 
-Данный документ описывает, как настраивать, запускать и разрабатывать проект с использованием команд, определенных в [Makefile](file:///C:/Users/rubts/GolandProjects/golang-starter/Makefile).
+Данный документ описывает, как настраивать, запускать и разрабатывать проект с использованием команд, определенных
+в [Makefile](file:///C:/Users/rubts/GolandProjects/golang-starter/Makefile).
 
 ---
 
 ## 1. Подготовка к работе
 
 Перед началом работы убедитесь, что у вас установлены:
+
 - **Go** (версия 1.22+)
 - **Docker** и **Docker Compose**
 - Утилита **make** (для запуска команд в терминале)
 
 ### Настройка переменных окружения
 
-В корне проекта находится файл шаблона [.env.example](file:///C:/Users/rubts/GolandProjects/golang-starter/.env.example). 
+В корне проекта находится файл
+шаблона [.env.example](file:///C:/Users/rubts/GolandProjects/golang-starter/.env.example).
 Создайте на его основе локальный файл `.env`:
 
 ```bash
@@ -21,6 +24,7 @@ cp .env.example .env
 ```
 
 Откройте созданный файл `.env` и заполните необходимые переменные (особенно учетные данные для PostgreSQL):
+
 - `POSTGRES_MASTER_USER` / `POSTGRES_REPLICA_USER`
 - `POSTGRES_MASTER_PASSWORD` / `POSTGRES_REPLICA_PASSWORD`
 - `POSTGRES_MASTER_DB` / `POSTGRES_REPLICA_DB`
@@ -29,9 +33,12 @@ cp .env.example .env
 
 ## 2. Управление инфраструктурой (Окружение)
 
-Вся инфраструктура проекта (база данных PostgreSQL) описывается в файле [docker-compose.yaml](file:///C:/Users/rubts/GolandProjects/golang-starter/docker-compose.yaml). Для управления ею используются следующие команды:
+Вся инфраструктура проекта (база данных PostgreSQL) описывается в
+файле [docker-compose.yaml](file:///C:/Users/rubts/GolandProjects/golang-starter/docker-compose.yaml). Для управления ею
+используются следующие команды:
 
 ### Запуск и остановка БД
+
 * **Запустить базу данных:**
   ```bash
   make env-up
@@ -51,13 +58,16 @@ cp .env.example .env
   Показывает список и статус запущенных Docker Compose контейнеров.
 
 ### Доступ к базе данных с хост-системы
-По умолчанию база данных PostgreSQL изолирована внутри сети Docker. Если вы хотите подключиться к ней напрямую со своего компьютера (например, для локального запуска Go-приложения или через клиент типа DBeaver/DataGrip):
+
+По умолчанию база данных PostgreSQL изолирована внутри сети Docker. Если вы хотите подключиться к ней напрямую со своего
+компьютера (например, для локального запуска Go-приложения или через клиент типа DBeaver/DataGrip):
 
 * **Открыть порты (проброс портов):**
   ```bash
   make env-port-forward
   ```
-  Запускает контейнер `port-forwarder` (на базе `socat`), который перенаправляет трафик с `127.0.0.1:5432` на порт `5432` контейнера БД.
+  Запускает контейнер `port-forwarder` (на базе `socat`), который перенаправляет трафик с `127.0.0.1:5432` на порт
+  `5432` контейнера БД.
 
 * **Закрыть порты:**
   ```bash
@@ -66,6 +76,7 @@ cp .env.example .env
   Останавливает и удаляет контейнер `port-forwarder`.
 
 ### Очистка данных и логов
+
 * **Очистить данные БД:**
   ```bash
   make env-cleanup
@@ -86,7 +97,8 @@ cp .env.example .env
 
 ## 3. Миграции базы данных
 
-Миграции запускаются через Docker-контейнер с утилитой `golang-migrate`. Файлы миграций располагаются в директории [migrations](file:///C:/Users/rubts/GolandProjects/golang-starter/migrations).
+Миграции запускаются через Docker-контейнер с утилитой `golang-migrate`. Файлы миграций располагаются в
+директории [migrations](file:///C:/Users/rubts/GolandProjects/golang-starter/migrations).
 
 * **Создать новую миграцию:**
   ```bash
@@ -111,7 +123,8 @@ cp .env.example .env
   ```bash
   make migrate-action action=<действие>
   ```
-  *Пример:* `make migrate-action action=force 1` (позволяет принудительно установить версию миграции при возникновении ошибок "dirty database state").
+  *Пример:* `make migrate-action action=force 1` (позволяет принудительно установить версию миграции при возникновении
+  ошибок "dirty database state").
 
 ---
 
@@ -120,11 +133,15 @@ cp .env.example .env
 Запустить REST API приложение на Go можно тремя способами:
 
 ### Вариант А: Быстрый запуск всего проекта одной командой (Рекомендуется)
+
 Если вам нужно сразу запустить весь проект целиком, выполните:
+
 ```bash
 make run
 ```
+
 Эта команда автоматически:
+
 1. Запустит базу данных PostgreSQL в Docker и дождется ее полной готовности (благодаря встроенному healthcheck).
 2. Настроит проброс портов на локальный хост (для доступа к БД извне).
 3. Применит все накопившиеся миграции.
@@ -133,6 +150,7 @@ make run
 ---
 
 ### Вариант Б: Поэтапный локальный запуск (Режим разработки)
+
 Этот режим наиболее удобен при активной отладке отдельных этапов или написании кода, когда инфраструктура уже запущена.
 
 1. Убедитесь, что БД запущена и её порт проброшен на локальный хост:
@@ -140,6 +158,12 @@ make run
    make env-up
    make env-port-forward
    ```
+
+   **Остановить:**
+      ```bash
+      make stop-all
+      ```
+
 2. Примените миграции (если запускаете проект впервые):
    ```bash
    make migrate-up
@@ -149,20 +173,24 @@ make run
    make todoapp-run
    ```
    Эта команда автоматически:
-   - Настроит переменные окружения для локальной работы (`POSTGRES_MASTER_HOST=localhost`, `POSTGRES_REPLICA_HOST=localhost`, `REDIS_HOST=localhost` и директорию логов).
-   - Выполнит проверку зависимостей через `go mod tidy`.
-   - Запустит Go-приложение из точки входа [cmd/todoapp/main.go](file:///C:/Users/rubts/GolandProjects/golang-starter/cmd/todoapp/main.go).
+    - Настроит переменные окружения для локальной работы (`POSTGRES_MASTER_HOST=localhost`,
+      `POSTGRES_REPLICA_HOST=localhost`, `REDIS_HOST=localhost` и директорию логов).
+    - Выполнит проверку зависимостей через `go mod tidy`.
+    - Запустит Go-приложение из точки
+      входа [cmd/todoapp/main.go](file:///C:/Users/rubts/GolandProjects/golang-starter/cmd/todoapp/main.go).
 
 ---
 
 ### Вариант В: Запуск в Docker Compose (Режим деплоя)
+
 Этот режим запускает приложение изолированно в Docker-контейнере.
 
 * **Запустить (деплой):**
   ```bash
   make todoapp-deploy
   ```
-  Собирает Docker-образ приложения (используя `cmd/todoapp/Dockerfile`) и запускает контейнер `todoapp`. Приложение будет работать внутри Docker-сети и напрямую общаться с PostgreSQL по имени хоста `todoapp-postgres`.
+  Собирает Docker-образ приложения (используя `cmd/todoapp/Dockerfile`) и запускает контейнер `todoapp`. Приложение
+  будет работать внутри Docker-сети и напрямую общаться с PostgreSQL по имени хоста `todoapp-postgres`.
 
 * **Остановить:**
   ```bash
@@ -174,20 +202,25 @@ make run
 
 ## 5. Генерация Swagger-документации
 
-Для автодокументирования REST API используется Swagger. Описание API генерируется на основе комментариев к обработчикам запросов.
+Для автодокументирования REST API используется Swagger. Описание API генерируется на основе комментариев к обработчикам
+запросов.
 
 * **Сгенерировать Swagger спецификацию:**
   ```bash
   make swagger-gen
   ```
-  Запускает генератор `swag` внутри Docker-контейнера. Он сканирует код и обновляет файлы в директории [docs](file:///C:/Users/rubts/GolandProjects/golang-starter/docs).
+  Запускает генератор `swag` внутри Docker-контейнера. Он сканирует код и обновляет файлы в
+  директории [docs](file:///C:/Users/rubts/GolandProjects/golang-starter/docs).
 
 ---
 
 ## 6. Проверка качества кода (Линтер)
 
-Для обеспечения качества кода и соблюдения стандартов кодирования в проекте используется статический анализатор **golangci-lint**. 
-Настройки линтера описаны в файле [golangci.yml](file:///C:/Users/rubts/GolandProjects/golang-starter/golangci.yml) в корне проекта. В нем активированы следующие проверки: `govet`, `errcheck`, `staticcheck`, `unused`, `gosimple`, `ineffassign`, `typecheck`, `revive`, `gocyclo`.
+Для обеспечения качества кода и соблюдения стандартов кодирования в проекте используется статический анализатор *
+*golangci-lint**.
+Настройки линтера описаны в файле [golangci.yml](file:///C:/Users/rubts/GolandProjects/golang-starter/golangci.yml) в
+корне проекта. В нем активированы следующие проверки: `govet`, `errcheck`, `staticcheck`, `unused`, `gosimple`,
+`ineffassign`, `typecheck`, `revive`, `gocyclo`.
 
 * **Запустить линтер:**
   ```bash
@@ -200,37 +233,47 @@ make run
 ## 7. Быстрая справка по командам
 
 Вы можете в любой момент вывести список доступных команд прямо в терминал, выполнив:
+
 ```bash
 make help
 ```
+
 Или просто запустив команду `make` без параметров (так как цель по умолчанию установлена в `help`).
 
 ---
 
 ## 8. Структура приложения и слои архитектуры
 
-Проект спроектирован по принципам Чистой Архитектуры (Clean Architecture) с использованием инверсии зависимостей (DIP). Код разделен на ядро приложения (`core`) и бизнес-фичи (`features`).
+Проект спроектирован по принципам Чистой Архитектуры (Clean Architecture) с использованием инверсии зависимостей (DIP).
+Код разделен на ядро приложения (`core`) и бизнес-фичи (`features`).
 
 Основная структура каталогов:
-- **[cmd/todoapp/main.go](file:///C:/Users/rubts/GolandProjects/golang-starter/cmd/todoapp/main.go)** — Главная точка входа. Здесь происходит чтение конфигурации, инициализация пула соединений PostgreSQL, ручное внедрение зависимостей (DI) для всех фич и запуск веб-сервера.
+
+- **[cmd/todoapp/main.go](file:///C:/Users/rubts/GolandProjects/golang-starter/cmd/todoapp/main.go)** — Главная точка
+  входа. Здесь происходит чтение конфигурации, инициализация пула соединений PostgreSQL, ручное внедрение зависимостей (
+  DI) для всех фич и запуск веб-сервера.
 - **[internal/core](file:///C:/Users/rubts/GolandProjects/golang-starter/internal/core)** — Общие системные компоненты:
-  - **config** — парсинг конфигураций окружения.
-  - **domain** — чистые доменные сущности (бизнес-модели), не зависящие от фреймворков и баз данных (например, `Task`, `User`).
-  - **errors** — системные ошибки.
-  - **logger** — настройка логгера Zap.
-  - **repository** — интерфейсы и реализации инфраструктурных пулов (например, пул pgx для PostgreSQL).
-  - **transport** — HTTP-сервер, глобальные middleware (CORS, Trace, Panic, Логирование), вспомогательные функции для парсинга запросов и формирования JSON-ответов.
-- **[internal/features](file:///C:/Users/rubts/GolandProjects/golang-starter/internal/features)** — Изолированные бизнес-фичи (модули) приложения (например, `tasks`, `users`, `statistics`):
-  - Каждая фича строго разделена на три слоя:
-    1. **transport/http** (Транспортный слой):
-       - Обрабатывает HTTP-запросы, валидирует входные JSON DTO, обращается к сервису и возвращает JSON-ответ.
-       - Содержит интерфейс `Service` (DIP), описывающий только те методы бизнес-логики, которые нужны транспорту.
-    2. **service** (Слой бизнес-логики):
-       - Реализует бизнес-правила и координирует вызовы репозитория.
-       - Содержит интерфейс `Repository` (DIP), описывающий только те методы работы с базой данных, которые нужны сервису.
-    3. **repository/postgres** (Инфраструктурный слой доступа к данным):
-       - Выполняет прямые SQL-запросы к базе данных через пул соединений.
-       - Преобразует структуры БД (из `models.go`) в чистые сущности `domain`.
+    - **config** — парсинг конфигураций окружения.
+    - **domain** — чистые доменные сущности (бизнес-модели), не зависящие от фреймворков и баз данных (например, `Task`,
+      `User`).
+    - **errors** — системные ошибки.
+    - **logger** — настройка логгера Zap.
+    - **repository** — интерфейсы и реализации инфраструктурных пулов (например, пул pgx для PostgreSQL).
+    - **transport** — HTTP-сервер, глобальные middleware (CORS, Trace, Panic, Логирование), вспомогательные функции для
+      парсинга запросов и формирования JSON-ответов.
+- **[internal/features](file:///C:/Users/rubts/GolandProjects/golang-starter/internal/features)** — Изолированные
+  бизнес-фичи (модули) приложения (например, `tasks`, `users`, `statistics`):
+    - Каждая фича строго разделена на три слоя:
+        1. **transport/http** (Транспортный слой):
+            - Обрабатывает HTTP-запросы, валидирует входные JSON DTO, обращается к сервису и возвращает JSON-ответ.
+            - Содержит интерфейс `Service` (DIP), описывающий только те методы бизнес-логики, которые нужны транспорту.
+        2. **service** (Слой бизнес-логики):
+            - Реализует бизнес-правила и координирует вызовы репозитория.
+            - Содержит интерфейс `Repository` (DIP), описывающий только те методы работы с базой данных, которые нужны
+              сервису.
+        3. **repository/postgres** (Инфраструктурный слой доступа к данным):
+            - Выполняет прямые SQL-запросы к базе данных через пул соединений.
+            - Преобразует структуры БД (из `models.go`) в чистые сущности `domain`.
 
 ---
 
@@ -239,7 +282,9 @@ make help
 Ниже представлен пошаговый процесс добавления новой функциональности (например, фичи «Проекты» — `projects`).
 
 ### Шаг 1. Определение сущности в Domain
+
 Если для фичи требуется новая бизнес-модель, создайте её в общем домене:
+
 * Создайте файл `internal/core/domain/project.go` и опишите структуру:
   ```go
   type Project struct {
@@ -249,7 +294,9 @@ make help
   ```
 
 ### Шаг 2. Создание миграции базы данных
+
 Если фиче нужна таблица в БД, создайте и примените миграцию:
+
 1. Выполните:
    ```bash
    make migrate-create seq=create_projects_table
@@ -261,60 +308,80 @@ make help
    ```
 
 ### Шаг 3. Реализация транспортного слоя (Transport HTTP)
-Начало разработки фичи "снаружи-внутрь" (outside-in) позволяет сначала спроектировать HTTP-контракты и DTO для взаимодействия с внешним миром.
+
+Начало разработки фичи "снаружи-внутрь" (outside-in) позволяет сначала спроектировать HTTP-контракты и DTO для
+взаимодействия с внешним миром.
+
 1. Создайте директорию `internal/features/projects/transport/http`.
 2. Создайте файл `transport.go`:
-   - Объявите структуру обработчика `ProjectsHTTPHandler`.
-   - Объявите интерфейс `ProjectsService` с методами, необходимыми для HTTP-обработчиков. **Важно:** Интерфейс сервиса объявляется именно в транспортном пакете (Dependency Inversion), поскольку транспорт диктует требования к бизнес-логике.
-   - Опишите метод `Routes() []core_http_server.Route` для сопоставления путей, HTTP-методов и обработчиков:
-     ```go
-     func (h *ProjectsHTTPHandler) Routes() []core_http_server.Route {
-         return []core_http_server.Route{
-             {
-                 Method:  http.MethodPost,
-                 Path:    "/projects",
-                 Handler: h.CreateProject,
-             },
-         }
-     }
-     ```
+    - Объявите структуру обработчика `ProjectsHTTPHandler`.
+    - Объявите интерфейс `ProjectsService` с методами, необходимыми для HTTP-обработчиков. **Важно:** Интерфейс сервиса
+      объявляется именно в транспортном пакете (Dependency Inversion), поскольку транспорт диктует требования к
+      бизнес-логике.
+    - Опишите метод `Routes() []core_http_server.Route` для сопоставления путей, HTTP-методов и обработчиков:
+      ```go
+      func (h *ProjectsHTTPHandler) Routes() []core_http_server.Route {
+          return []core_http_server.Route{
+              {
+                  Method:  http.MethodPost,
+                  Path:    "/projects",
+                  Handler: h.CreateProject,
+              },
+          }
+      }
+      ```
 3. Создайте файлы конкретных обработчиков (например, `create_project.go`):
-   - Опишите структуры запроса/ответа (DTO) и валидацию входящих параметров.
-   - Напишите обработчик (Handler), который читает HTTP-запрос, вызывает интерфейсный метод `ProjectsService` и возвращает результат в JSON с помощью встроенных хелперов ответа.
+    - Опишите структуры запроса/ответа (DTO) и валидацию входящих параметров.
+    - Напишите обработчик (Handler), который читает HTTP-запрос, вызывает интерфейсный метод `ProjectsService` и
+      возвращает результат в JSON с помощью встроенных хелперов ответа.
 
 ### Шаг 4. Реализация слоя бизнес-логики (Service)
+
 Теперь мы реализуем бизнес-логику, удовлетворяющую интерфейсу, который запросил наш транспортный слой.
+
 1. Создайте директорию `internal/features/projects/service`.
 2. Создайте файл `service.go` в этом пакете:
-   - Объявите структуру сервиса `ProjectsService` (она должна реализовывать интерфейс `ProjectsService` из пакета транспорта).
-   - Объявите интерфейс `ProjectsRepository`, описывающий методы сохранения/получения данных, которые необходимы сервису. **Важно:** Интерфейс репозитория объявляется именно здесь (Dependency Inversion), так как бизнес-логика диктует свои требования к хранилищу.
-   - Напишите конструктор:
-     ```go
-     type ProjectsService struct {
-         repo ProjectsRepository
-     }
-     
-     type ProjectsRepository interface {
-         SaveProject(ctx context.Context, p domain.Project) (domain.Project, error)
-     }
-     
-     func NewProjectsService(repo ProjectsRepository) *ProjectsService {
-         return &ProjectsService{repo: repo}
-     }
-     ```
-3. Создайте файлы конкретных методов сервиса (например, `create_project.go`) и реализуйте в них бизнес-логику (валидация, доменные инварианты), вызывая методы интерфейса `ProjectsRepository`.
+    - Объявите структуру сервиса `ProjectsService` (она должна реализовывать интерфейс `ProjectsService` из пакета
+      транспорта).
+    - Объявите интерфейс `ProjectsRepository`, описывающий методы сохранения/получения данных, которые необходимы
+      сервису. **Важно:** Интерфейс репозитория объявляется именно здесь (Dependency Inversion), так как бизнес-логика
+      диктует свои требования к хранилищу.
+    - Напишите конструктор:
+      ```go
+      type ProjectsService struct {
+          repo ProjectsRepository
+      }
+      
+      type ProjectsRepository interface {
+          SaveProject(ctx context.Context, p domain.Project) (domain.Project, error)
+      }
+      
+      func NewProjectsService(repo ProjectsRepository) *ProjectsService {
+          return &ProjectsService{repo: repo}
+      }
+      ```
+3. Создайте файлы конкретных методов сервиса (например, `create_project.go`) и реализуйте в них бизнес-логику (
+   валидация, доменные инварианты), вызывая методы интерфейса `ProjectsRepository`.
 
 ### Шаг 5. Реализация доступа к данным (Repository)
+
 На последнем этапе мы создаем конкретную реализацию хранилища под контракт репозитория, определенный в сервисе.
+
 1. Создайте директорию `internal/features/projects/repository/postgres`.
 2. Создайте файл `repository.go`:
-   - Объявите структуру `ProjectsRepository` (которая реализует интерфейс `ProjectsRepository` из пакета сервиса), принимающую пул соединений `core_postgres_pool.Pool`.
-   - Напишите конструктор.
-3. Создайте `models.go` для объявления структур хранения, соответствующих колонкам в таблице БД (с тегами для маппинга pgx).
-4. Создайте файлы с реализацией методов работы с БД (например, `save_project.go`), которые будут выполнять SQL-запросы через пул и удовлетворять интерфейсу `ProjectsRepository` из слоя Service.
+    - Объявите структуру `ProjectsRepository` (которая реализует интерфейс `ProjectsRepository` из пакета сервиса),
+      принимающую пул соединений `core_postgres_pool.Pool`.
+    - Напишите конструктор.
+3. Создайте `models.go` для объявления структур хранения, соответствующих колонкам в таблице БД (с тегами для маппинга
+   pgx).
+4. Создайте файлы с реализацией методов работы с БД (например, `save_project.go`), которые будут выполнять SQL-запросы
+   через пул и удовлетворять интерфейсу `ProjectsRepository` из слоя Service.
 
 ### Шаг 6. Регистрация и связывание (Dependency Injection) в main.go
-Соберите все части воедино в файле [cmd/todoapp/main.go](file:///C:/Users/rubts/GolandProjects/golang-starter/cmd/todoapp/main.go):
+
+Соберите все части воедино в
+файле [cmd/todoapp/main.go](file:///C:/Users/rubts/GolandProjects/golang-starter/cmd/todoapp/main.go):
+
 1. Импортируйте созданные пакеты фичи.
 2. Проинициализируйте слои (снизу вверх) внутри функции `main()`:
    ```go
@@ -328,7 +395,9 @@ make help
    ```
 
 ### Шаг 7. Документирование API (Swagger)
-1. Добавьте Swagger-комментарии над методами-обработчиками в транспортном слое (например, `@Summary`, `@Accept`, `@Produce`, `@Param`, `@Success` и т.д.).
+
+1. Добавьте Swagger-комментарии над методами-обработчиками в транспортном слое (например, `@Summary`, `@Accept`,
+   `@Produce`, `@Param`, `@Success` и т.д.).
 2. Перегенерируйте спецификацию:
    ```bash
    make swagger-gen
