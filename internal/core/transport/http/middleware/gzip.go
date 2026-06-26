@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"strings"
 	"sync"
+
+	core_logger "github.com/rubtsov-ilya/golang-starter/internal/core/logger"
 )
 
 var gzipWriterPool = sync.Pool{
@@ -61,8 +63,16 @@ func Gzip() Middleware {
 				next.ServeHTTP(w, r)
 				return
 			}
+			ctx := r.Context()
+			log := core_logger.FromContext(ctx)
 			gzp := &gzipResponseWriter{ResponseWriter: w}
 			defer gzp.Close()
+
+			requestID := r.Header.Get(requestIDHeader)
+			log.Debug(
+				">>> gzip HTTP request",
+				core_logger.String("request_id", requestID),
+			)
 
 			next.ServeHTTP(gzp, r)
 		})
