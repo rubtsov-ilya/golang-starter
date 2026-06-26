@@ -11,7 +11,8 @@ services:
       - ${PROJECT_ROOT}/.env
     environment:
       - HTTP_ADDR=:5050
-      - POSTGRES_HOST=todoapp-postgres
+      - POSTGRES_MASTER_HOST=todoapp-postgres
+      - POSTGRES_REPLICA_HOST=todoapp-postgres
       - REDIS_HOST=todoapp-redis
       - LOGGER_FOLDER=/app/out/logs
     volumes:
@@ -24,9 +25,9 @@ services:
     image: postgres:18.1-bookworm
     container_name: todoapp-env-postgres
     environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_MASTER_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_MASTER_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_MASTER_DB}
     volumes:
       - ${PROJECT_ROOT}/out/pgdata:/var/lib/postgresql
     restart: always

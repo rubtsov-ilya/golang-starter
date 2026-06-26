@@ -72,13 +72,14 @@ ifeq ($(action),)
 endif
 	docker compose run --rm todoapp-postgres-migrate \
 		-path /migrations \
-		-database postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@todoapp-postgres:5432/${POSTGRES_DB}?sslmode=disable \
+		-database postgres://${POSTGRES_MASTER_USER}:${POSTGRES_MASTER_PASSWORD}@todoapp-postgres:5432/${POSTGRES_MASTER_DB}?sslmode=disable \
 		"$(action)"
 
 run: env-up env-port-forward migrate-up todoapp-run ## env & app: Запустить всё окружение, применить миграции и запустить приложение локально
 
 todoapp-run: LOGGER_FOLDER=$(PROJECT_ROOT)/out/logs
-todoapp-run: POSTGRES_HOST=localhost
+todoapp-run: POSTGRES_MASTER_HOST=localhost
+todoapp-run: POSTGRES_REPLICA_HOST=localhost
 todoapp-run: REDIS_HOST=localhost
 todoapp-run: ## Golang приложение: Запустить локально на хост-системе (для локальной разработки)
 	go mod tidy

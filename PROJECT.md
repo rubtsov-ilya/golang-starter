@@ -21,9 +21,9 @@ cp .env.example .env
 ```
 
 Откройте созданный файл `.env` и заполните необходимые переменные (особенно учетные данные для PostgreSQL):
-- `POSTGRES_USER`
-- `POSTGRES_PASSWORD`
-- `POSTGRES_DB`
+- `POSTGRES_MASTER_USER` / `POSTGRES_REPLICA_USER`
+- `POSTGRES_MASTER_PASSWORD` / `POSTGRES_REPLICA_PASSWORD`
+- `POSTGRES_MASTER_DB` / `POSTGRES_REPLICA_DB`
 
 ---
 
@@ -149,7 +149,7 @@ make run
    make todoapp-run
    ```
    Эта команда автоматически:
-   - Настроит переменные окружения для локальной работы (`POSTGRES_HOST=localhost`, `REDIS_HOST=localhost` и директорию логов).
+   - Настроит переменные окружения для локальной работы (`POSTGRES_MASTER_HOST=localhost`, `POSTGRES_REPLICA_HOST=localhost`, `REDIS_HOST=localhost` и директорию логов).
    - Выполнит проверку зависимостей через `go mod tidy`.
    - Запустит Go-приложение из точки входа [cmd/todoapp/main.go](file:///C:/Users/rubts/GolandProjects/golang-starter/cmd/todoapp/main.go).
 
