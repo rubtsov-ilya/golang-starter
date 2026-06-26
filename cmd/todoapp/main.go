@@ -128,6 +128,7 @@ func main() {
 		core_http_middleware.Logger(logger),
 		limiter.RateLimiter(),
 		core_http_middleware.Trace(),
+		core_http_middleware.Gzip(),
 		core_http_middleware.Timeout(httpConfig.Timeout),
 		core_http_middleware.Panic(),
 	)
